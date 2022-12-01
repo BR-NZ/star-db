@@ -13,7 +13,7 @@ class SwapiService {
 	};
 	async getAllPeople() {
 		const res = await this.getResource(`/people/`);
-		return res.results.forEach(this._transformPerson);
+		return res.results.map(this._transformPerson);
 	}
 	async getPerson(id) {
 		const person = await this.getResource(`/people/${id}/`);
@@ -35,7 +35,7 @@ class SwapiService {
 		const starship = await this.getResource(`/starships/${id}/`);
 		return this._transformStarship(starship);
 	}
-	_transformPlanet(planet) {
+	_transformPlanet = (planet) => {
 		return {
 			id: this._extractId(planet),
 			name: planet.name,
@@ -44,7 +44,7 @@ class SwapiService {
 			diameter: planet.diameter
 		};
 	}
-	_transformStarship(starship) {
+	_transformStarship = (starship) => {
 		return {
 			id: this._extractId(starship),
 			name: starship.name,
@@ -57,23 +57,15 @@ class SwapiService {
 			cargoCapacity: starship.cargoCapacity
 		}
 	}
-	_transformPerson(person) {
+	_transformPerson = (person) => {
 		return {
 			id: this._extractId(person),
 			name: person.name,
 			gender: person.gender,
-			birthYear: person.birthYear,
-			eyeColor: person.eyeColor
+			birthYear: person.birth_year,
+			eyeColor: person.eye_color
 		}
 	}
 }
 
 export default SwapiService;
-
-/*
-const swapi = new SwapiService();
-swapi.getPerson(3)
-	.then((people) => {
-		console.log(people.name);
-	})
-*/
